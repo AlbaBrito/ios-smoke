@@ -1,0 +1,62 @@
+<%
+
+require "run_loop"
+
+APP = "./Products/app/CalSmoke-cal/CalSmoke-cal.app"
+
+ss_path = "./screenshots/"
+FileUtils.rm_rf(ss_path)
+FileUtils.mkdir(ss_path)
+
+user_home = RunLoop::Environment.user_home_directory
+dot_xamarin_dir = File.join(user_home, ".xamarin")
+devices_dir = File.join(dot_xamarin_dir, "devices")
+
+devices = {}
+
+device_list = ["neptune", "venus", "earp", "mars", "saturn", "pegasi", "hat", "erik", "denis", "uranus"]
+device_list.each do |device|
+  device_dir = File.join(devices_dir, device)
+  if File.exist?(device_dir)
+    ip_file = File.join(device_dir, "ip")
+    udid_file = File.join(device_dir, "udid")
+
+    if File.exist?(ip_file) && File.exist?(udid_file)
+       ip = IO.read(ip_file)
+       udid = IO.read(udid_file)
+
+       devices[device.to_sym] = {
+           :ip => ip,
+           :udid => udid
+       }
+     end
+  else
+    devices[device.to_sym] = {
+       :ip => "http://#{device}.local:37265",
+       :udid => device
+    }
+  end
+end
+
+%>
+
+verbose: DEBUG=1
+common: -f pretty SCREENSHOT_PATH=<%= ss_path %>
+
+# Simulators
+simulator:     APP=<%= APP %> -p common --tags ~@device_only --tags ~@device
+default:       -p simulator
+
+# Devices
+# Run with -p device if your device is not list above
+device:  APP=sh.calaba.CalSmoke-cal -p common --tags ~@simulator --tags ~@simulator_only
+neptune: DEVICE_TARGET=<%= devices[:neptune][:udid] %> DEVICE_ENDPOINT=<%= devices[:neptune][:ip] %> -p device
+venus: DEVICE_TARGET=<%= devices[:venus][:udid] %>   DEVICE_ENDPOINT=<%= devices[:venus][:ip] %> -p device
+earp: DEVICE_TARGET=<%= devices[:earp][:udid] %> DEVICE_ENDPOINT=<%= devices[:earp][:ip] %> -p device
+mars: DEVICE_TARGET=<%= devices[:mars][:udid] %> DEVICE_ENDPOINT=<%= devices[:mars][:ip] %> -p device
+saturn: DEVICE_TARGET=<%= devices[:saturn][:udid] %> DEVICE_ENDPOINT=<%= devices[:saturn][:ip] %> -p device
+pegasi: DEVICE_TARGET=<%= devices[:pegasi][:udid] %> DEVICE_ENDPOINT=<%= devices[:pegasi][:ip] %> -p device
+hat: DEVICE_TARGET=<%= devices[:hat][:udid] %> DEVICE_ENDPOINT=<%= devices[:hat][:ip] %> -p device
+erik: DEVICE_TARGET=<%= devices[:erik][:udid] %> DEVICE_ENDPOINT=<%= devices[:erik][:ip] %> -p device
+denis: DEVICE_TARGET=<%= devices[:denis][:udid] %> DEVICE_ENDPOINT=<%= devices[:denis][:ip] %> -p device
+uranus: DEVICE_TARGET=<%= devices[:uranus][:udid] %> DEVICE_ENDPOINT=<%= devices[:uranus][:ip] %> -p device

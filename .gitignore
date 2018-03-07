@@ -1,0 +1,64 @@
+# turds
+(.*/)?\#[^/]*\#$
+tags
+*.bak
+*.swp
+*.swo
+
+# git mergetool (Guiffy)
+*.orig
+
+# binaries
+*.ipa
+*.apk
+*.app
+*.app.zip
+*.dSYM
+Products
+
+# Mac OS X
+.DS_Store
+__MACOSX
+
+# Jetbrains
+.idea
+
+InfoPlist.h
+
+# ruby/calabash/cucumber
+.irb-history
+.irbrc-*
+.bundle
+*.gem
+reports
+screenshots
+*screenshot*.png
+.ruby-version
+.pry-history
+Gemfile.lock
+
+# briar
+.env
+
+# Jenkins CI
+ci-reports
+
+# Directories in which binaries, features, a Gemfile, and
+# cucumber.yml are staged for XTC submission.
+xtc-submit*
+.xtc-credentials
+.xtc
+
+# Xcode 4+
+*.xcodeproj/*.mode*
+*.xcodeproj/*.perspective*
+*.xcodeproj/*.pbxuser
+*.xcodeproj/xcuserdata
+*.xcodeproj/project.xcworkspace/xcuserdata
+*.xcuserdatad
+*.xcworkspace/xcshareddata/*.xccheckout
+*.xccheckout
+
+## Build products
+build/*
+*/build/*
